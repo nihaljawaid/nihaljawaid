@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nihal Jawaid Graphic Design</title>
+    <style>
+        /* A simple reset to handle spacing */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Keyframes for a dynamic background effect */
+        @keyframes background-pan {
+            from {
+                background-position: 0% 0%;
+            }
+            to {
+                background-position: -200% 0%;
+            }
+        }
+
+        /* Keyframes for a subtle, pulsating glow effect */
+        @keyframes subtle-glow {
+            0%, 100% {
+                box-shadow: 0 0 5px rgba(0, 255, 255, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 15px rgba(144, 235, 243, 0.8), 0 0 20px rgba(0, 255, 255, 0.6);
+            }
+        }
+
+        /* Keyframes for a subtle text shadow hover effect */
+        @keyframes text-shadow-pulse {
+            0%, 100% {
+                text-shadow: 0 0 10px rgba(85, 152, 152, 0.7);
+            }
+            50% {
+                text-shadow: 0 0 20px rgb(78, 142, 142);
+            }
+        }
+
+        /* Basic styling for the entire page with a dark theme */
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(90deg, #0a0a0a, #111111, #0a0a0a);
+            background-size: 200% 100%;
+            animation: background-pan 30s linear infinite;
+            color: #e0e0e0;
+            overflow-x: hidden; /* Prevents horizontal scroll from animation */
+            position: relative; /* Needed for absolute positioning of glow */
+            animation: subtle-glow 5s ease-in-out infinite alternate;
+        }
+
+        /* Style the main heading at the top */
+        .header {
+            display: flex; /* Use flexbox for logo and text alignment */
+            align-items: center;
+            gap: 15px; /* Adjusted space between the logo and the text */
+            padding: 20px 40px; /* Adjusted padding for better fit */
+            background-color: transparent;
+            backdrop-filter: none;
+            margin-bottom: 20px;
+            border-bottom: none;
+            box-shadow: none;
+            animation: header-fade-in 1.5s ease-out;
+            position: relative; /* To be above the canvas */
+            z-index: 1; /* Ensure header is above the particle canvas */
+        }
+
+        /* Animation for the header text */
+        @keyframes header-fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Styling for the logo image */
+        .logo {
+            width: 70px; /* Smaller logo size for better balance */
+            height: 70px;
+            border-radius: 50%; /* Makes the logo a circle */
+            border: 2px solid #71c4c4; /* Changed to cyan */
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: rotate(360deg) scale(1.1); /* A fun spin and scale effect on hover */
+        }
+
+        /* Styling for the name text */
+        .header h1 {
+            font-size: clamp(1.5em, 3vw, 2em); /* Smaller font size for the name */
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+            margin: 0; /* Remove default margin */
+            transition: transform 0.3s ease;
+        }
+
+        .header h1:hover {
+            transform: scale(1.05); /* Subtle scale on hover */
+            animation: text-shadow-pulse 2s ease-in-out infinite;
+        }
+
+        /* Container for the images */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            padding: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative; /* To be above the canvas */
+            z-index: 1; /* Ensure gallery is above the particle canvas */
+        }
+
+        /* Styling for each individual image and its container */
+        .image-card {
+            background-color: #0d0d0d; /* Updated to a darker background */
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid transparent;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease, border-color 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative; /* For caption positioning */
+            
+            /* Initial state for animation */
+            opacity: 0;
+            transform: translateY(40px) scale(0.9);
+        }
+
+        /* Hover effect for the image card */
+        .image-card:hover {
+            transform: translateY(-15px) scale(1.05) perspective(1000px) rotateY(10deg); /* Unique 3D tilt effect */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8), 0 0 20px #00FFFF; /* Stronger glow on hover */
+            border-color: #00FFFF; /* Changed to cyan glow effect on hover */
+        }
+
+        /* Styling for the actual image */
+        .image-card img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        /* Image hover effect */
+        .image-card:hover img {
+            transform: scale(1.1); /* Stronger zoom on hover */
+        }
+
+        /* Styling for the image caption */
+        .image-caption {
+            padding: 18px;
+            text-align: center;
+            font-style: italic;
+            color: #ccc;
+            font-size: 1em;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background-color: rgba(13, 13, 13, 0.8);
+            backdrop-filter: blur(5px);
+            transform: translateY(100%); /* Start hidden */
+            opacity: 0;
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.4s ease; /* Added a bounce effect */
+        }
+
+        /* Show caption on hover */
+        .image-card:hover .image-caption {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Simple footer for the page */
+        .footer {
+            text-align: center;
+            padding: 25px;
+            margin-top: 50px;
+            border-top: 2px solid #1a1a1a; /* Updated border color */
+            color: #777;
+            font-size: 0.8em;
+            background-color: #0a0a0a; /* Updated to a darker background */
+            position: relative; /* To be above the canvas */
+            z-index: 1; /* Ensure footer is above the particle canvas */
+        }
+
+        /* The canvas element for the background animation */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Place behind all other content */
+        }
+    </style>
+    <!-- We're using the Inter font for a modern look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Top heading section with logo and name -->
+    <header class="header">
+        <img src="111_PhotoGrid.jpeg" alt="Nihal Jawaid Logo" class="logo">
+        <h1>NIHAL JAWAID</h1>
+    </header>
+
+    <!-- Main content area with the image gallery -->
+    <main>
+        <div class="gallery">
+            <!-- Image Card 1 -->
+            <div class="image-card">
+                <img src="Pink And Beige Minimalist Id Card Mockup Instagram Post.png" alt="A minimalist logo design with a geometric shape.">
+            </div>
+
+            <!-- Image Card 2 -->
+            <div class="image-card">
+                <img src="Beige and Brown Minimalist Business Card Mockup Instagram Post.png" alt="A branding mockup showing a business card and letterhead.">
+            </div>
+
+            <!-- Image Card 3 -->
+            <div class="image-card">
+                <img src="Black and Brown Minimalist Business Card Mockup Instagram Post.png" alt="A poster design for a music festival with vibrant colors.">
+            </div>
+
+            <!-- Image Card 4 -->
+            <div class="image-card">
+                <img src="Grey and Black Simple Business Card Mockup Instagram Post.png" alt="hexatech">
+            </div>
+
+            <!-- Image Card 5 -->
+            <div class="image-card">
+                <img src="White Minimalist Id Card Mockup Instagram Post-3.png" alt="A sleek and modern website homepage layout.">
+            </div>
+
+            <!-- Image Card 6 -->
+            <div class="image-card">
+                <img src="Elegant Floral Business Card Mockup Instagram Post.png" alt="Packaging design for a coffee brand.">
+            </div>
+
+            <!-- Image Card 7 -->
+            <div class="image-card">
+                <img src="White And Green Minimalist Id Card Mockup Instagram Post.png" alt="A book cover design with a stylized typography.">
+            </div>
+
+            <!-- Image Card 8 -->
+            <div class="image-card">
+                <img src="Beige Classic Refined Business Card Mockup Instagram Post.png" alt="Social media graphics with a tropical theme.">
+            </div>
+
+            <!-- Image Card 9 -->
+            <div class="image-card">
+                <img src="Brown and Peach Paper Business Card Mockup Instagram Post.png" alt="A complex infographic illustrating data on climate change.">
+            </div>
+
+            <!-- Image Card 10 -->
+            <div class="image-card">
+                <img src="White Minimalist Business Card Mockup Instagram Post.png" alt="A hand-drawn sketch of a character for a comic book.">
+            </div>
+            <!-- Image Card 11 -->
+            <div class="image-card">
+                <img src="Grey Minimalist Id Card Mockup Instagram Post.png" alt="A hand-drawn sketch of a character for a comic book.">
+            </div>
+            <!-- Image Card 12 -->
+            <div class="image-card">
+                <img src="Elegant Creative Studio Business Card Mockup Instagram Post .png" alt="A hand-drawn sketch of a character for a comic book.">
+            </div>
+        </div>
+    </main>
+
+    <!-- Simple page footer -->
+    <footer class="footer">
+        &copy; 2024 Nihal Jawaid. All rights reserved.
+    </footer>
+
+    <!-- JavaScript for the scroll-based animation -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const cards = document.querySelectorAll('.image-card');
+            
+            // Function to check if an element is in the viewport
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        // Stagger the animation using a CSS variable
+                        entry.target.style.transition = `transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${index * 0.1}s, opacity 0.8s ease ${index * 0.1}s, box-shadow 0.4s ease, border-color 0.4s ease`;
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0) scale(1)';
+                        
+                        // Stop observing the element once it's visible
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.2 // Trigger when 20% of the item is visible
+            });
+
+            // Observe each card
+            cards.forEach(card => {
+                observer.observe(card);
+            });
+        });
+    </script>
+
+    <!-- New script for the canvas particle animation -->
+    <script>
+        window.onload = function() {
+            const canvas = document.getElementById('particle-canvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+
+            // Set canvas size to the window size
+            function setCanvasSize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            setCanvasSize();
+            window.addEventListener('resize', setCanvasSize);
+
+            // Particle class
+            class Particle {
+                constructor(x, y) {
+                    this.x = x;
+                    this.y = y;
+                    this.size = Math.random() * 2 + 1;
+                    this.speedX = Math.random() * 0.5 - 0.25;
+                    this.speedY = Math.random() * 0.5 - 0.25;
+                    this.color = 'rgba(0, 255, 255, ' + (Math.random() * 0.8 + 0.2) + ')';
+                }
+
+                // Update particle position
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    if (this.size > 0.2) this.size -= 0.05;
+                }
+
+                // Draw the particle
+                draw() {
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            // Create new particles
+            function createParticles() {
+                const numParticles = 2; // Control how many particles are created per frame
+                for (let i = 0; i < numParticles; i++) {
+                    const x = Math.random() * canvas.width;
+                    const y = Math.random() * canvas.height;
+                    particles.push(new Particle(x, y));
+                }
+            }
+
+            // Animation loop
+            function animateParticles() {
+                // Clear the canvas with a transparent black to create a fade effect
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Add new particles and update/draw existing ones
+                createParticles();
+                for (let i = 0; i < particles.length; i++) {
+                    particles[i].update();
+                    particles[i].draw();
+                }
+
+                // Remove particles that are too small
+                particles = particles.filter(particle => particle.size > 0.2);
+
+                // Request the next animation frame
+                requestAnimationFrame(animateParticles);
+            }
+
+            animateParticles();
+        };
+    </script>
+</body>
+</html>

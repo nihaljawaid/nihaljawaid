@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Portfolio — Nihal Jawaid</title>
+    <meta name="description" content="Nihal Jawaid's dark, animated portfolio with a custom chatbot." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet" />
+    <style>
+        /* CSS variables for consistent styling */
+        :root {
+            --bg: #0b0b0b;
+            --ink: #f1f1f1;
+            --muted: #a8a8a8;
+            --panel: #141414;
+            --line: #1f1f1f;
+            --brand: #9ef7d1;
+            --radius: 18px;
+            --shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+            --transition: 0.28s ease;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        html, body {
+            height: 100%;
+            scroll-behavior: smooth;
+        }
+        body {
+            margin: 0;
+            font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            cursor: none; /* for custom cursor */
+        }
+        /* Custom cursor */
+        #custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--brand);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+            z-index: 10000;
+            mix-blend-mode: difference;
+        }
+        /* Background WebGL canvas */
+        canvas#bg {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            display: block;
+        }
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            background: rgba(10, 10, 10, 0.75);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--line);
+            transition: background 0.3s ease;
+        }
+        /* Change header background on scroll */
+        header.scrolled {
+            background: rgba(10, 10, 10, 0.95);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.75);
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+            color: var(--ink);
+            font-size: 1.3rem;
+            animation: name-glow 2s ease-in-out infinite alternate;
+        }
+        /* Keyframes for the new name glow animation */
+        @keyframes name-glow {
+            from { text-shadow: 0 0 5px rgba(241, 241, 241, 0.2), 0 0 10px rgba(241, 241, 241, 0.2); }
+            to { text-shadow: 0 0 10px rgba(241, 241, 241, 0.5), 0 0 20px rgba(241, 241, 241, 0.5); }
+        }
+        nav {
+            display: flex;
+            gap: 22px;
+        }
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.98rem;
+            position: relative;
+        }
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--brand);
+            transition: width var(--transition);
+        }
+        nav a:hover, nav a:focus {
+            color: var(--ink);
+            outline: none;
+        }
+        nav a:hover::after, nav a:focus::after {
+            width: 100%;
+        }
+        /* Sections */
+        section {
+            padding: 80px 20px;
+            border-top: 1px solid var(--line);
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        h2.section-title {
+            margin: 0 0 24px;
+            font-size: 28px;
+            letter-spacing: 0.3px;
+        }
+        p.lead {
+            color: var(--muted);
+            max-width: 800px;
+            font-size: 1.15rem;
+            line-height: 1.6;
+        }
+        /* Hero */
+        .hero {
+            padding: 120px 20px 120px;
+            display: grid;
+            place-items: center;
+            border-top: none;
+            text-align: center;
+        }
+        .hero-inner {
+            max-width: 600px;
+        }
+        /* New styling for the profile photo in the hero section */
+        .hero-photo {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--brand);
+            box-shadow: 0 6px 20px rgba(158, 247, 209, 0.6);
+            margin-bottom: 20px;
+        }
+        .title {
+            margin: 0 0 10px;
+            font-size: clamp(32px, 6vw, 64px);
+            font-weight: 800;
+            line-height: 1.03;
+            user-select: none;
+        }
+        .subtitle {
+            color: var(--muted);
+            margin: 0 0 22px;
+            font-weight: 400;
+            min-height: 30px;
+            font-style: italic;
+        }
+        .cta {
+            display: inline-block;
+            padding: 14px 22px;
+            border-radius: 999px;
+            background: var(--ink);
+            color: #111;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.1rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            user-select: none;
+        }
+        .cta:hover, .cta:focus {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(158, 247, 209, 0.7);
+            outline: none;
+        }
+        /* New Portfolio Styles */
+        .portfolio-nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        .portfolio-nav-link {
+            padding: 10px 20px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            text-decoration: none;
+            color: var(--muted);
+            font-weight: 600;
+            transition: all var(--transition), transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .portfolio-nav-link:hover {
+            background: var(--brand);
+            color: var(--bg);
+            border-color: var(--brand);
+            box-shadow: 0 10px 30px rgba(158, 247, 209, 0.5);
+            transform: translateY(-5px) scale(1.05);
+        }
+        .portfolio-nav-link.active {
+            background: var(--brand);
+            color: var(--bg);
+            border-color: var(--brand);
+            box-shadow: 0 4px 15px rgba(158, 247, 209, 0.4);
+        }
+        .portfolio-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            width: 100%;
+        }
+        .portfolio-item {
+            display: block;
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--line);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            background: var(--panel);
+        }
+        .portfolio-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(158, 247, 209, 0.3);
+        }
+        .portfolio-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        /* New styles for the portfolio item content */
+        .portfolio-item-content {
+            padding: 16px;
+            height: 150px;
+            display: 80PX;
+        }
+        .portfolio-item-content h3 {
+            margin: 0 0 8px;
+            font-size: 1.25rem;
+            color: var(--ink);
+        }
+        .portfolio-item-content p {
+            margin: 0 0 16px;
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+        /* Video placeholder styles */
+        .portfolio-video-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+            width: 100%;
+            height: 0;
+            padding-bottom: 75%; /* 4:3 aspect ratio */
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .portfolio-video-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8));
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+        .portfolio-video-item:hover::before {
+            opacity: 0.2;
+        }
+        .play-button {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            z-index: 1;
+            transition: transform 0.3s ease;
+            color: #fff;
+        }
+        .portfolio-video-item:hover .play-button {
+            transform: scale(1.1);
+        }
+        /* New view button style */
+        .view-project-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 999px;
+            background: var(--brand);
+            color: var(--bg);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        }
+        .view-project-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(158, 247, 209, 0.5);
+            background: #a9fbd8;
+        }
+        /* Contact styles */
+        .contact-info, .about-info, .contact-form-container {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 24px;
+            will-change: transform, box-shadow;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            margin-bottom: 20px;
+        }
+        /* Changed the animation to a darker shade of the brand color */
+        .contact-info::before, .about-info::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: linear-gradient(45deg, #32664b, transparent, #32664b);
+            background-size: 400% 400%;
+            border-radius: calc(var(--radius) + 5px);
+            z-index: -1;
+            opacity: 0.5;
+            animation: gradient-pulse 5s ease-in-out infinite;
+        }
+        /* Keyframes for the glowing border animation */
+        @keyframes gradient-pulse {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        /* Contact buttons */
+        .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 18px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: linear-gradient(180deg, #171717, #0f0f0f);
+            color: var(--ink);
+            text-decoration: none;
+            font-weight: 700;
+            will-change: transform, box-shadow;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            user-select: none;
+        }
+        /* Style for the icon inside the button */
+        .btn-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px; /* Spacing between icon and text */
+        }
+        .btn:hover, .btn:focus {
+            transform: scale(1.05); /* Added scale animation */
+            box-shadow: 0 15px 40px rgba(158, 247, 209, 0.85);
+            border-color: #2b2b2b;
+            outline: none;
+        }
+        /* Animation for social media buttons */
+        .social-btn:hover, .social-btn:focus {
+            transform: translateY(-5px) scale(1.05); /* Lifts and scales */
+            background: var(--brand);
+            color: var(--bg);
+            box-shadow: 0 10px 30px rgba(158, 247, 209, 0.5);
+        }
+        .social-btn:hover .btn-icon, .social-btn:focus .btn-icon {
+            fill: var(--bg);
+        }
+        /* Footer */
+        footer {
+            padding: 26px 20px;
+            border-top: 1px solid var(--line);
+            color: var(--muted);
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        /* Reveal on scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: none;
+        }
+        /* Back to top button */
+        #backToTop {
+            position: fixed;
+            right: 30px;
+            bottom: 30px;
+            padding: 12px 18px;
+            background: var(--brand);
+            color: var(--bg);
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 10001;
+            user-select: none;
+        }
+        #backToTop.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="custom-cursor" aria-hidden="true"></div>
+    <canvas id="bg" aria-hidden="true"></canvas>
+    <header>
+        <div class="brand" tabindex="0" aria-label="Homepage link">
+            <div>Nihal Jawaid</div>
+        </div>
+        <nav role="navigation" aria-label="Main navigation">
+            <a href="#about" tabindex="0">About</a>
+            <a href="#portfolio" tabindex="0" id="portfolio-nav-link">Portfolio</a>
+            <a href="#contact" tabindex="0">Contact</a>
+            <a href="Nihal Jawaid-..pdf" target="_blank" tabindex="0">Resume</a>
+        </nav>
+    </header>
+    <main>
+        <section class="hero">
+            <div class="hero-inner" id="hero">
+                <!-- Profile picture with increased size -->
+                <img src="111_PhotoGrid.jpeg" alt="Nihal Jawaid's headshot" class="hero-photo" />
+                <h1 class="title">Designer & Developer</h1>
+                <p class="subtitle" id="typing"></p>
+                <a href="#portfolio" class="cta" tabindex="0">See my work</a>
+            </div>
+        </section>
+        <section id="about">
+            <div class="container">
+                <h2 class="section-title reveal">About</h2>
+                <div class="about-info reveal">
+         
+                     <p class="text-align: left;">
+                        I’m a Software Engineer specializing in App Development, Web Development, AI Solutions, Graphic Design, and Video Editing, delivering innovative and scalable digital products that help brands grow. With a strong focus on creativity and functionality, I create professional websites, apps, branding, and visuals that make businesses stand out. My expertise in video editing and visual storytelling allows me to craft engaging content that connects with audiences, while my technical skills ensure seamless, high-performing solutions tailored to each client’s needs.
+                    </p>
+                </div>
+            </div>
+        </section>
+        <section id="portfolio">
+            <div class="container">
+                <h2 class="section-title reveal">My Portfolio</h2>
+                <div class="portfolio-nav reveal">
+                    <!-- Updated the active class to start on graphic design -->
+                    <a href="#" class="portfolio-nav-link" data-category="app-dev">App Dev</a>
+                    <a href="#" class="portfolio-nav-link" data-category="web-dev">Web Dev</a>
+                    <a href="#" class="portfolio-nav-link active" data-category="graphic-design">Graphic Design</a>
+                    <a href="#" class="portfolio-nav-link" data-category="video-editing">Video Editing</a>
+                </div>
+                <div id="portfolio-content" class="portfolio-content reveal">
+                </div>
+            </div>
+        </section>
+        <section id="contact">
+            <div class="container">
+                <h2 class="section-title reveal">Contact</h2>
+                <p class="lead reveal">Available for freelance & full-time roles.</p>
+                <div class="contact-info reveal">
+                    <p><strong>Email:</strong> nihalraza066@gmail.com</p>
+                    <p><strong>Phone:</strong> 03192873921</p>
+                    <p><strong>Location:</strong> Islamabad</p>
+                </div>
+                <div class="links reveal">
+                    <a class="btn social-btn" href="https://github.com/nihaljawaid" target="_blank" rel="noopener" tabindex="0">
+                    <svg class="btn-icon" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.6.111.82-.25.82-.557 0-.275-.015-1.002-.015-1.977-3.336.724-4.042-1.61-4.042-1.61-.545-1.386-1.332-1.755-1.332-1.755-1.09-.744.082-.73.082-.73 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.775.419-1.305.762-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.11-3.176 0 0 1-.322 3.3.996.957-.266 1.983-.399 3.003-.404 1.02.005 2.046.138 3.006.404 2.29-1.318 3.285-.996 3.285-.996.65 1.653.245 2.873.12 3.176.77.84 1.235 1.91 1.235 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.21 0 1.606-.015 2.898-.015 3.286 0 .309.21.67.825.56C20.565 21.808 24 17.309 24 12c0-6.627-5.373-12-12-12z"/>
+                     </svg>
+                     <span>GitHub</span>
+                 </a>
+
+                    <a class="btn social-btn" href="https://www.instagram.com/nihaljawaid_/" target="_blank" rel="noopener" tabindex="0">
+                        <svg class="btn-icon" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.624 4.909 4.909.058 1.265.07 1.645.07 4.85s-.012 3.584-.07 4.85c-.148 3.252-1.624 4.771-4.909 4.909-1.265.058-1.645.07-4.85.07s-3.584-.012-4.85-.07c-3.251-.148-4.771-1.624-4.91-4.909-.058-1.265-.07-1.645-.07-4.85s.012-3.584.07-4.85c.149-3.25 1.624-4.771 4.91-4.91 1.265-.058 1.645-.07 4.85-.07zm0-2.163c-3.668 0-4.06.014-5.48.081-4.492.203-6.953 2.664-7.155 7.155-.067 1.42-.08 1.812-.08 5.48s.014 4.06.08 5.48c.204 4.492 2.665 6.953 7.156 7.155 1.42.067 1.812.08 5.48.08s4.06-.014 5.48-.08c4.492-.204 6.954-2.665 7.155-7.156.067-1.42.08-1.812.08-5.48s-.014-4.06-.08-5.48c-.205-4.492-2.666-6.953-7.156-7.155-1.42-.067-1.812-.08-5.48-.08zm0 5.838c-3.462 0-6.262 2.8-6.262 6.262s2.8 6.262 6.262 6.262 6.262-2.8 6.262-6.262-2.8-6.262-6.262-6.262zm0 10.385c-2.275 0-4.123-1.848-4.123-4.123s1.848-4.123 4.123-4.123 4.123 1.848 4.123 4.123-1.848 4.123-4.123 4.123zm7.406-11.45c-.829 0-1.5-.671-1.5-1.5s.671-1.5 1.5-1.5 1.5.671 1.5 1.5-.671 1.5-1.5 1.5z"/>
+                        </svg>
+                        <span>Instagram</span>
+                    </a>
+                    <a class="btn social-btn" href="https://www.linkedin.com/in/nihal-raza-408122331/" target="_blank" rel="noopener" tabindex="0">
+                        <svg class="btn-icon" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.765s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.765-1.75 1.765zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                        </svg>
+                        <span>LinkedIn</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        © <span id="year"></span> Made by Nihal Jawaid
+    </footer>
+    <button id="backToTop" aria-label="Back to top">↑ Top</button>
+
+    <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/gsap@3/dist/ScrollToPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
+    <script>
+        // *** START OF CORE JAVASCRIPT LOGIC ***
+
+        // Custom cursor
+        const cursor = document.getElementById('custom-cursor');
+        window.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+        document.querySelectorAll('a, button, .card, .portfolio-nav-link').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.width = '48px';
+                cursor.style.height = '48px';
+                cursor.style.backgroundColor = 'rgba(158,247,209,0.15)';
+                cursor.style.borderColor = 'var(--brand)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.width = '24px';
+                cursor.style.height = '24px';
+                cursor.style.backgroundColor = 'transparent';
+                cursor.style.borderColor = 'var(--brand)';
+            });
+        });
+
+        // GSAP hero animation
+        (function () {
+            const hero = document.getElementById('hero');
+            const parts = hero.querySelectorAll('.hero-photo, h1, p, a');
+            gsap.from(parts, {
+                y: 40, opacity: 0, duration: 1, stagger: 0.15, ease: "power3.out"
+            });
+        })();
+
+        // Reveal on scroll
+        (function () {
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('visible');
+                        io.unobserve(e.target);
+                    }
+                });
+            }, { threshold: .12 });
+            
+            document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+        })();
+        
+        // Footer year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Sticky header background on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            const backToTop = document.getElementById('backToTop');
+            if (window.scrollY > 30) {
+                header.classList.add('scrolled');
+                backToTop.classList.add('show');
+            } else {
+                header.classList.remove('scrolled');
+                backToTop.classList.remove('show');
+            }
+        });
+
+        // Back to top button
+        const backToTop = document.getElementById('backToTop');
+        backToTop.addEventListener('click', () => {
+            gsap.to(window, {duration: 1, scrollTo: 0, ease: "power3.inOut"});
+        });
+
+        // Typing animation for hero subtitle
+        const subtitle = document.getElementById('typing');
+        const phrases = [
+            "Crafting calm, high-impact digital experiences.",
+            "UX Design | Web Development | Branding",
+            "Let's build something amazing together."
+        ];
+        let phraseIndex = 0, letterIndex = 0;
+        const typingSpeed = 60;
+        const erasingSpeed = 40;
+        const delayBetweenPhrases = 2000;
+        function type() {
+            if (letterIndex < phrases[phraseIndex].length) {
+                subtitle.textContent += phrases[phraseIndex].charAt(letterIndex);
+                letterIndex++;
+                setTimeout(type, typingSpeed);
+            } else {
+                setTimeout(erase, delayBetweenPhrases);
+            }
+        }
+        function erase() {
+            if (letterIndex > 0) {
+                subtitle.textContent = phrases[phraseIndex].substring(0, letterIndex - 1);
+                letterIndex--;
+                setTimeout(erase, erasingSpeed);
+            } else {
+                phraseIndex++;
+                if (phraseIndex >= phrases.length) phraseIndex = 0;
+                setTimeout(type, typingSpeed + 500);
+            }
+        }
+        setTimeout(type, 1000);
+
+        // THREE.js particle background with color pulse effect
+        (function () {
+            const canvas = document.getElementById('bg');
+            const renderer = new THREE.WebGLRenderer({canvas, antialias: true, alpha: true});
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, 2, 0.1, 100);
+            camera.position.z = 6;
+            scene.background = new THREE.Color(0x0b0b0b);
+            scene.fog = new THREE.Fog(0x0b0b0b, 4, 14);
+            const count = 2500;
+            const positions = new Float32Array(count * 3);
+            for (let i = 0; i < count * 3; i++) {
+                positions[i] = (Math.random() - 0.5) * 18;
+            }
+            const geo = new THREE.BufferGeometry();
+            geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            const mat = new THREE.PointsMaterial({
+                size: 0.03,
+                color: new THREE.Color(0x9ef7d1),
+                transparent: true,
+                opacity: 0.85
+            });
+            const points = new THREE.Points(geo, mat);
+            scene.add(points);
+            let pulseDirection = 1;
+            function pulseColor(time) {
+                const baseColor = new THREE.Color(0x9ef7d1);
+                const pulseAmount = 0.3 * pulseDirection;
+                const hsl = {};
+                baseColor.getHSL(hsl);
+                hsl.l += pulseAmount;
+                hsl.l = Math.min(1, Math.max(0, hsl.l));
+                mat.color.setHSL(hsl.h, hsl.s, hsl.l);
+                if (hsl.l >= 1) pulseDirection = -1;
+                if (hsl.l <= 0.7) pulseDirection = 1;
+            }
+            function resizeRendererToDisplaySize() {
+                const width = canvas.clientWidth;
+                const height = canvas.clientHeight;
+                const needResize = canvas.width !== width || canvas.height !== height;
+                if (needResize) {
+                    renderer.setSize(width, height, false);
+                    camera.aspect = width / height;
+                    camera.updateProjectionMatrix();
+                }
+                return needResize;
+            }
+            let targetRotX = 0, targetRotY = 0;
+            window.addEventListener('mousemove', (e) => {
+                const x = (e.clientX / window.innerWidth) * 2 - 1;
+                const y = (e.clientY / window.innerHeight) * 2 - 1;
+                targetRotY = x * 0.15;
+                targetRotX = y * 0.08;
+            }, { passive: true });
+            function render(time) {
+                time *= 0.001;
+                points.rotation.y += 0.0008;
+                points.rotation.x += (targetRotX - points.rotation.x) * 0.02;
+                points.rotation.y += (targetRotY - points.rotation.y) * 0.02;
+                pulseColor(time);
+                resizeRendererToDisplaySize();
+                renderer.render(scene, camera);
+                requestAnimationFrame(render);
+            }
+            requestAnimationFrame(render);
+            function setSize() {
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                renderer.setSize(window.innerWidth, window.innerHeight, false);
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+            }
+            window.addEventListener('resize', setSize, { passive: true });
+            setSize();
+        })();
+
+        // Portfolio Functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const portfolioNavLinks = document.querySelectorAll('.portfolio-nav-link');
+            const portfolioContent = document.getElementById('portfolio-content');
+            
+            // Function to display portfolio content based on category
+            function showCategory(category) {
+                // Clear existing content
+                portfolioContent.innerHTML = '';
+                
+                const grid = document.createElement('div');
+                grid.classList.add('portfolio-grid');
+                portfolioContent.appendChild(grid);
+
+                let imageQuery = '';
+                let projectData = [];
+
+                // Define project data for each category
+                switch (category) {
+                    case 'app-dev':
+                        projectData = [
+                            { title: 'FLIGHT APP', description: 'Full-stack app developer | Flutter, Java, Kotlin, Swift.', image: 'Aesthetic Phone Mockup Instagram Post copy.png',url:'app%20design.html' },
+                            { title: 'SEED APP', description: 'Full-stack app developer | Flutter, Java, Kotlin, Swift.', image: 'Beige and White Minimalist Phone Mockup Instagram Post.png',url:'app3.html' },
+                            { title: 'MONEY APP', description: 'Full-stack app developer | Flutter, Java, Kotlin, Swift.', image: 'Aesthetic Phone Mockup Instagram Post-2.png',url:'app4.html' },
+                            { title: 'EVENT APP', description: 'Full-stack app developer | Flutter, Java, Kotlin, Swift.', image: 'Gray and Brown Minimalist Phone Mockup Instagram Post-2.png',url:'app7.html' },
+                            { title: 'PEFLOW APP', description: 'Full-stack app developer | Flutter, Java, Kotlin, Swift.', image: 'Elegant phone notification reminder and motivational Instagram post.png',url:'app5.html' },
+                            { title: 'RELIC App', description: 'Full-stack app developer | Flutter, Java, Kotlin, Swift.', image: 'Brown Beige Skincare New Product Instagram Post.png',url:'app6.html' },
+                            { title: 'FUMIO APP', description: 'Full-stack app developer | Flutter, Java, Kotlin, Swift.', image: 'Aesthetic Phone Mockup Instagram Post-3.png',url:'app8.html' },
+                             { title: 'FLORA APP', description: 'Full-stack app developer | Flutter, Java, Kotlin, Swift.', image: 'Aesthetic Phone Mockup Instagram Post-4.png',url:'app2.html' },
+                        
+                        ];
+                        break;
+                    case 'web-dev':
+                        projectData = [
+                            { title: 'PERFUME WEB ', description: 'Full-stack web developer | HTML, CSS, JS, React, Node.js', image: 'Black and White Minimalist Desktop Mockup Instagram Post-7.png', url: 'https://www.myperfumeshop.co.uk' },
+                            { title: 'DOORDASH WEB', description: 'Full-stack web developer | HTML, CSS, JS, React, Node.js', image: 'Black and White Minimalist Desktop Mockup Instagram Post-6.png', url: 'https://www.doordash.com/?srsltid=AfmBOorQcbcHnfka4bv6FtCNgnyWawR_LNkew3Qi3__Jlz5pkWk_xs31' },
+                            { title: 'ENGINE WEB', description: 'Full-stack web developer | HTML, CSS, JS, React, Node.js', image: 'Black and White Minimalist Desktop Mockup Instagram Post-8.png',url:'https://engine.com.pk' },
+                            { title: 'INTERWOOD WEB ', description: 'Full-stack web developer | HTML, CSS, JS, React, Node.js', image: 'Black and White Minimalist Desktop Mockup Instagram Post-9.png', url: 'https://interwood.pk' },
+                            { title: 'BORJAN WEB ', description: 'Full-stack web developer | HTML, CSS, JS, React, Node.js', image: 'Black and White Minimalist Desktop Mockup Instagram Post-2.png', url: 'https://www.borjan.com.pk' },
+                            { title: 'SEVESTON WEB', description: 'Full-stack web developer | HTML, CSS, JS, React, Node.js', image: 'Black and White Minimalist Desktop Mockup Instagram Post-3.png', url: 'https://en-pk.svestonwatches.com' },
+                            { title: 'FANDANGO WEB', description: 'Full-stack web developer | HTML, CSS, JS, React, Node.js', image: 'Black and White Minimalist Desktop Mockup Instagram Post-4.png', url: 'https://www.fandango.com' },
+                            { title: 'RAZER WEB', description: 'Full-stack web developer | HTML, CSS, JS, React, Node.js', image: 'Black and White Minimalist Desktop Mockup Instagram Post-5.png', url: 'https://www.razer.com' },
+                            
+                        ];
+                        break;
+                    case 'graphic-design':
+                        projectData = [
+                            { title: 'LOGO', description: 'Professional logo design that makes brands stand out', image: 'Pink Abstract Handwritten Brand Logo.png', url: 'LOGO.html' },
+                            { title: 'BUSINESS CARD', description: 'Professional and creative business card design.', image: 'White Minimalist Id Card Mockup Instagram Post copy.png', url: 'business.html' },
+                            { title: 'FLYER DESIGN', description: 'Eye-catching and impactful flyer design', image: 'Gray and Pink Minimalist Desktop Mockup Instagram Post-2.png',url:'flyer.html' },
+                            { title: 'SOCIAL MEDIA', description: 'Engaging and creative social media post design', image: 'White And Red Modern Smart Watch Sale Instagram Post-5 copy 3.png',url: 'socialmedia.html' },
+                            { title: 'MOCKUP', description: 'Realistic and professional mockup design', image: 'Gray and Pink Minimalist Desktop Mockup Instagram Post-4.png', url: 'mockup.html' },
+                            { title: 'THUMBNAIL', description: 'Eye-catching and click-worthy thumbnail design', image: 'Gray and Pink Minimalist Desktop Mockup Instagram Post-5.png',url: 'thumbnail.html' },
+                            { title: 'BOOK COVER', description: 'Creative and captivating book cover design', image: 'Gray and Pink Minimalist Desktop Mockup Instagram Post-6.png',url:'bookcover.html' },
+                            { title: 'NEWSPAPER', description: 'Professional and visually appealing newspaper design', image: 'Gray and Pink Minimalist Desktop Mockup Instagram Post-7.png',url:'newspaper.html' },
+                        ];
+                        break;
+                    case 'video-editing':
+                        projectData = [
+                            { title: 'FOOD', description: 'Delicious and visually appealing food videos', image : 'Image 23-08-2025 at 2.42 AM copy.jpg',url:'vedio1.html' },
+                            { title: 'BEAUTY', description: 'Elegant and captivating beauty videos', image : 'Image 23-08-2025 at 4.03 PM.jpg',url:'vedio2.html' },
+                            { title: 'BAKERY', description: 'Delicious and enticing bakery videos', image : 'Image 23-08-2025 at 4.04 PM.jpg',url:'vedio3.html' },
+                            { title: 'TEXT ANIMATION', description: 'Creative and dynamic text animation', image: 'Image 23-08-2025 at 4.04 PM 2.jpg',url:'vedio4.html' },
+                        ];
+                        break;
+                }
+
+                if (projectData.length > 0) { 
+                    projectData.forEach(project => {
+                        const item = document.createElement('div');
+                        item.classList.add('portfolio-item');
+                        item.classList.add('reveal');
+                        
+                        if (project.video) {
+                            // If it's a video project
+                            const videoPlaceholder = document.createElement('div');
+                            videoPlaceholder.classList.add('portfolio-video-item');
+                            
+                            const video = document.createElement('video');
+                            video.src = project.video;
+                            video.poster = project.poster;
+                            video.loop = true;
+                            video.muted = true;
+                            video.playsInline = true;
+                            video.style.position = 'absolute';
+                            video.style.inset = 0;
+                            video.style.width = '100%';
+                            video.style.height = '100%';
+                            video.style.objectFit = 'cover';
+                            
+                            const playButton = document.createElement('img');
+                            playButton.src = 'data:image/svg+xml;utf8,<svg xmlns="" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>';
+                            playButton.classList.add('play-button');
+                            
+                            videoPlaceholder.appendChild(video);
+                            videoPlaceholder.appendChild(playButton);
+                            
+                            videoPlaceholder.addEventListener('click', () => {
+                                if (video.paused) {
+                                    video.play();
+                                    playButton.style.opacity = '0';
+                                    videoPlaceholder.style.cursor = 'initial';
+                                } else {
+                                    video.pause();
+                                    playButton.style.opacity = '1';
+                                    videoPlaceholder.style.cursor = 'pointer';
+                                }
+                            });
+                            
+                            item.appendChild(videoPlaceholder);
+                        } else {
+                            // If it's an image project
+                            const img = document.createElement('img');
+                            img.src = project.image;
+                            img.alt = project.title;
+                            item.appendChild(img);
+                        }
+
+                        const content = document.createElement('div');
+                        content.classList.add('portfolio-item-content');
+                        
+                        const title = document.createElement('h3');
+                        title.textContent = project.title;
+                        
+                        const description = document.createElement('p');
+                        description.textContent = project.description;
+                        
+                        const viewBtn = document.createElement('a');
+                        viewBtn.href = project.url || '#'; // Use project.url if available, else '#'
+                        viewBtn.textContent = 'View Project';
+                        viewBtn.classList.add('view-project-btn');
+                        viewBtn.target = '_blank'; // Open in new tab
+                        viewBtn.rel = 'noopener'; // Security best practice
+
+                        content.appendChild(title);
+                        content.appendChild(description);
+                        content.appendChild(viewBtn);
+                        
+                        item.appendChild(content);
+                        grid.appendChild(item);
+                        
+                        // Re-trigger the reveal animation for new content
+                        new IntersectionObserver((entries, observer) => {
+                            entries.forEach(e => {
+                                if (e.isIntersecting) {
+                                    e.target.classList.add('visible');
+                                    observer.unobserve(e.target);
+                                }
+                            });
+                        }, { threshold: 0.12 }).observe(item);
+                    });
+                } else {
+                    portfolioContent.textContent = 'No projects found for this category.';
+                }
+            }
+
+            // Handle navigation clicks
+            portfolioNavLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    // Remove active class from all links
+                    portfolioNavLinks.forEach(navLink => navLink.classList.remove('active'));
+                    
+                    // Add active class to the clicked link
+                    e.target.classList.add('active');
+                    
+                    // Show projects for the selected category
+                    const category = e.target.dataset.category;
+                    showCategory(category);
+                });
+            });
+
+            // Show the default category on page load
+            const activeLink = document.querySelector('.portfolio-nav-link.active');
+            if (activeLink) {
+                showCategory(activeLink.dataset.category);
+            }
+        });
+    </script>
+</body>
+</html>
+

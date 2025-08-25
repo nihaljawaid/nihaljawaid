@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nihal Jawaid Graphic Design</title>
+    <style>
+        /* A simple reset to handle spacing */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Keyframes for a dynamic background effect */
+        @keyframes background-pan {
+            from {
+                background-position: 0% 0%;
+            }
+            to {
+                background-position: -200% 0%;
+            }
+        }
+
+        /* Keyframes for a subtle, pulsating glow effect */
+        @keyframes subtle-glow {
+            0%, 100% {
+                box-shadow: 0 0 5px rgba(0, 255, 255, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 15px rgba(144, 235, 243, 0.8), 0 0 20px rgba(0, 255, 255, 0.6);
+            }
+        }
+
+        /* Keyframes for a subtle text shadow hover effect */
+        @keyframes text-shadow-pulse {
+            0%, 100% {
+                text-shadow: 0 0 10px rgba(85, 152, 152, 0.7);
+            }
+            50% {
+                text-shadow: 0 0 20px rgb(78, 142, 142);
+            }
+        }
+
+        /* Basic styling for the entire page with a dark theme */
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(90deg, #0a0a0a, #111111, #0a0a0a);
+            background-size: 200% 100%;
+            animation: background-pan 30s linear infinite;
+            color: #e0e0e0;
+            overflow-x: hidden; /* Prevents horizontal scroll from animation */
+            position: relative; /* Needed for absolute positioning of glow */
+            animation: subtle-glow 5s ease-in-out infinite alternate;
+        }
+
+        /* Style the main heading at the top */
+        .header {
+            display: flex; /* Use flexbox for logo and text alignment */
+            align-items: center;
+            gap: 15px; /* Adjusted space between the logo and the text */
+            padding: 20px 40px; /* Adjusted padding for better fit */
+            background-color: transparent;
+            backdrop-filter: none;
+            margin-bottom: 20px;
+            border-bottom: none;
+            box-shadow: none;
+            animation: header-fade-in 1.5s ease-out;
+            position: relative; /* To be above the canvas */
+            z-index: 1; /* Ensure header is above the particle canvas */
+        }
+
+        /* Animation for the header text */
+        @keyframes header-fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Styling for the logo image */
+        .logo {
+            width: 70px; /* Smaller logo size for better balance */
+            height: 70px;
+            border-radius: 50%; /* Makes the logo a circle */
+            border: 2px solid #71c4c4; /* Changed to cyan */
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: rotate(360deg) scale(1.1); /* A fun spin and scale effect on hover */
+        }
+
+        /* Styling for the name text */
+        .header h1 {
+            font-size: clamp(1.5em, 3vw, 2em); /* Smaller font size for the name */
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+            margin: 0; /* Remove default margin */
+            transition: transform 0.3s ease;
+        }
+
+        .header h1:hover {
+            transform: scale(1.05); /* Subtle scale on hover */
+            animation: text-shadow-pulse 2s ease-in-out infinite;
+        }
+
+        /* Styling for the video container to center it */
+        .video-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative; /* To be above the canvas */
+            z-index: 1; /* Ensure video is above the particle canvas */
+        }
+        
+        /* Styling for the video element itself */
+        .portfolio-video {
+            width: 100%;
+            max-width: 900px;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8), 0 0 20px #00FFFF; /* Strong glow */
+            border: 2px solid #00FFFF;
+            transition: transform 0.4s ease;
+        }
+
+        /* Video hover effect for a subtle zoom */
+        .portfolio-video:hover {
+            transform: scale(1.02);
+        }
+
+        /* Simple footer for the page */
+        .footer {
+            text-align: center;
+            padding: 25px;
+            margin-top: 50px;
+            border-top: 2px solid #1a1a1a; /* Updated border color */
+            color: #777;
+            font-size: 0.8em;
+            background-color: #0a0a0a; /* Updated to a darker background */
+            position: relative; /* To be above the canvas */
+            z-index: 1; /* Ensure footer is above the particle canvas */
+        }
+
+        /* The canvas element for the background animation */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Place behind all other content */
+        }
+    </style>
+    <!-- We're using the Inter font for a modern look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Top heading section with logo and name -->
+    <header class="header">
+        <img src="111_PhotoGrid.jpeg" alt="Nihal Jawaid Logo" class="logo">
+        <h1>Nihal jawaid</h1>
+    </header>
+
+    <!-- Main content area with the video -->
+   <main>
+        <div class="video-container">
+            <!-- This is the video element. Replace the 'src' attribute with your own video file path. -->
+            <video 
+                class="portfolio-video" 
+                controls 
+                loop 
+                muted 
+                 poster="Image 21-08-2025 at 9.12 PM.jpg"
+            >
+                <!-- NOTE: You can add multiple source tags for different video formats for wider browser support -->
+                <source src="Black Simple We Are Open Video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </main>
+
+   <main>
+        <div class="video-container">
+            <!-- This is the video element. Replace the 'src' attribute with your own video file path. -->
+            <video 
+                class="portfolio-video" 
+                controls 
+                loop 
+                muted 
+                 poster="Image 21-08-2025 at 9.11 PM.jpg"
+            >
+                <!-- NOTE: You can add multiple source tags for different video formats for wider browser support -->
+                <source src="Brown Gray Minimalist Bakery Promotion Youtube Video Ad.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </main>
+
+   <main>
+        <div class="video-container">
+            <!-- This is the video element. Replace the 'src' attribute with your own video file path. -->
+            <video 
+                class="portfolio-video" 
+                controls 
+                loop 
+                muted 
+                 poster="Image 21-08-2025 at 9.11 PM copy 2.jpg"
+            >
+                <!-- NOTE: You can add multiple source tags for different video formats for wider browser support -->
+                <source src="Brown Aesthetic Food Menu Video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </main>
+
+   <main>
+        <div class="video-container">
+            <!-- This is the video element. Replace the 'src' attribute with your own video file path. -->
+            <video 
+                class="portfolio-video" 
+                controls 
+                loop 
+                muted 
+                 poster="Image 21-08-2025 at 9.07 PM.jpg"
+            >
+                <!-- NOTE: You can add multiple source tags for different video formats for wider browser support -->
+                <source src="Brown and Yellow Elegant Bakery Video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </main>
+
+    <main>
+        <div class="video-container">
+            <!-- This is the video element. Replace the 'src' attribute with your own video file path. -->
+            <video 
+                class="portfolio-video" 
+                controls 
+                loop 
+                muted 
+                 poster="Image 21-08-2025 at 8.52 PM copy.jpg"
+            >
+                <!-- NOTE: You can add multiple source tags for different video formats for wider browser support -->
+                <source src="Blue and White Simple Elegant Minimalist Parfume Launching Soon Video-2.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </main>
+
+    <!-- Simple page footer -->
+    <footer class="footer">
+        &copy; 2024 Nihal Jawaid. All rights reserved.
+    </footer>
+
+    <!-- Script for the canvas particle animation -->
+    <script>
+        window.onload = function() {
+            const canvas = document.getElementById('particle-canvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+
+            // Set canvas size to the window size
+            function setCanvasSize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            setCanvasSize();
+            window.addEventListener('resize', setCanvasSize);
+
+            // Particle class
+            class Particle {
+                constructor(x, y) {
+                    this.x = x;
+                    this.y = y;
+                    this.size = Math.random() * 2 + 1;
+                    this.speedX = Math.random() * 0.5 - 0.25;
+                    this.speedY = Math.random() * 0.5 - 0.25;
+                    this.color = 'rgba(0, 255, 255, ' + (Math.random() * 0.8 + 0.2) + ')';
+                }
+
+                // Update particle position
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    if (this.size > 0.2) this.size -= 0.05;
+                }
+
+                // Draw the particle
+                draw() {
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            // Create new particles
+            function createParticles() {
+                const numParticles = 2; // Control how many particles are created per frame
+                for (let i = 0; i < numParticles; i++) {
+                    const x = Math.random() * canvas.width;
+                    const y = Math.random() * canvas.height;
+                    particles.push(new Particle(x, y));
+                }
+            }
+
+            // Animation loop
+            function animateParticles() {
+                // Clear the canvas with a transparent black to create a fade effect
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Add new particles and update/draw existing ones
+                createParticles();
+                for (let i = 0; i < particles.length; i++) {
+                    particles[i].update();
+                    particles[i].draw();
+                }
+
+                // Remove particles that are too small
+                particles = particles.filter(particle => particle.size > 0.2);
+
+                // Request the next animation frame
+                requestAnimationFrame(animateParticles);
+            }
+
+            animateParticles();
+        };
+    </script>
+</body>
+</html>

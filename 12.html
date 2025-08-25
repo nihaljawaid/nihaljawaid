@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sleek and Modern Landing Page</title>
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom CSS for animations */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in-up.animate-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-in-left {
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in-left.animate-visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .fade-in-right {
+            opacity: 0;
+            transform: translateX(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in-right.animate-visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .scale-in {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .scale-in.animate-visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Hero section specific animations */
+        .hero-text.fade-in-up {
+            transition-delay: 0.2s; /* Delay for the text after the hero section loads */
+        }
+        .hero-cta.scale-in {
+            transition-delay: 0.4s; /* Delay for the button */
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-200 antialiased">
+
+    <!-- Header & Navigation -->
+    <header class="bg-slate-900 shadow-xl sticky top-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-teal-500 hover:text-teal-400 transition-colors duration-300">Aura Solutions</a>
+            <nav class="hidden md:flex space-x-8 items-center">
+                <a href="#hero" class="text-slate-300 hover:text-teal-400 transition-colors duration-300 font-medium">Home</a>
+                <a href="#about" class="text-slate-300 hover:text-teal-400 transition-colors duration-300 font-medium">About</a>
+                <a href="#services" class="text-slate-300 hover:text-teal-400 transition-colors duration-300 font-medium">Services</a>
+                <a href="#why-us" class="text-slate-300 hover:text-teal-400 transition-colors duration-300 font-medium">Why Us</a>
+                <a href="#contact" class="bg-teal-500 text-slate-950 font-bold py-2 px-6 rounded-full shadow-lg hover:bg-teal-400 transition-colors duration-300">
+                    Contact
+                </a>
+            </nav>
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-slate-300 hover:text-teal-400 focus:outline-none">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-900 shadow-md transition-all duration-300">
+            <nav class="flex flex-col space-y-4 p-4">
+                <a href="#hero" class="block py-2 text-slate-300 hover:text-teal-400 font-medium">Home</a>
+                <a href="#about" class="block py-2 text-slate-300 hover:text-teal-400 font-medium">About</a>
+                <a href="#services" class="block py-2 text-slate-300 hover:text-teal-400 font-medium">Services</a>
+                <a href="#why-us" class="block py-2 text-slate-300 hover:text-teal-400 font-medium">Why Us</a>
+                <a href="#contact" class="block py-2 text-slate-300 hover:text-teal-400 font-medium">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section - Animated -->
+        <section id="hero" class="relative overflow-hidden bg-gradient-to-b from-slate-950 to-slate-900 text-white py-20 px-4 md:py-32 min-h-screen flex items-center justify-center">
+            <div class="container mx-auto text-center">
+                <h1 class="text-5xl md:text-6xl font-extrabold leading-tight mb-4 tracking-tight fade-in-up hero-text">
+                    Crafting Digital Excellence.
+                </h1>
+                <p class="text-lg md:text-xl max-w-2xl mx-auto mb-8 opacity-80 fade-in-up hero-text">
+                    We build beautiful, fast, and scalable web solutions that elevate your brand and engage your audience.
+                </p>
+                <a href="#contact" class="bg-teal-500 text-slate-950 font-bold py-3 px-10 rounded-full shadow-lg hover:bg-teal-400 transition-all duration-300 transform hover:scale-105 scale-in hero-cta">
+                    Start Your Project
+                </a>
+            </div>
+        </section>
+
+        <!-- About Section - Animated -->
+        <section id="about" class="py-20 px-4 md:py-24 bg-slate-900">
+            <div class="container mx-auto">
+                <div class="text-center mb-12 fade-in-up">
+                    <h2 class="text-4xl font-bold mb-4">Who We Are</h2>
+                    <p class="text-slate-400 max-w-3xl mx-auto">
+                        A dedicated team of digital creators passionate about delivering exceptional results.
+                    </p>
+                </div>
+                <div class="max-w-3xl mx-auto">
+                    <!-- About Text - Animated -->
+                    <div class="text-center fade-in-up">
+                        <h3 class="text-2xl font-semibold mb-4 text-teal-500">Our Story & Mission</h3>
+                        <p class="text-slate-300 mb-4">
+                            Founded on the principle of turning creative ideas into tangible realities, Aura Solutions is more than just a development agency. We are your technology partner, committed to understanding your unique vision and helping you achieve it with precision and care.
+                        </p>
+                        <p class="text-slate-300">
+                            Our process is built on transparency, collaboration, and a relentless pursuit of perfection. We believe that great work comes from great partnerships.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section - Animated -->
+        <section id="services" class="bg-slate-950 py-20 px-4 md:py-24">
+            <div class="container mx-auto">
+                <div class="text-center mb-16 fade-in-up">
+                    <h2 class="text-4xl font-bold mb-4">Our Core Services</h2>
+                    <p class="text-slate-400 max-w-3xl mx-auto">
+                        From concept to launch, we offer a full spectrum of services to bring your digital product to life.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    <!-- Service Card 1 - Animated -->
+                    <div class="group bg-slate-900 p-8 rounded-xl shadow-md hover:shadow-2xl hover:bg-slate-800 transition-all duration-300 transform hover:-translate-y-2 fade-in-left">
+                        <div class="mb-4 text-teal-500 group-hover:text-teal-400 transition-colors duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M10 20h4a2 2 0 002-2V6a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a2 2 0 002 2zM4 18h16M8 8h8M8 12h8M8 16h8" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-slate-100 group-hover:text-white">Web Development</h3>
+                        <p class="text-slate-400">
+                            Building bespoke, high-performance websites and web applications with modern frameworks.
+                        </p>
+                    </div>
+                    <!-- Service Card 2 - Animated -->
+                    <div class="group bg-slate-900 p-8 rounded-xl shadow-md hover:shadow-2xl hover:bg-slate-800 transition-all duration-300 transform hover:-translate-y-2 scale-in">
+                        <div class="mb-4 text-teal-500 group-hover:text-teal-400 transition-colors duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 12c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-slate-100 group-hover:text-white">UX/UI Design</h3>
+                        <p class="text-slate-400">
+                            Crafting intuitive, accessible, and beautiful user interfaces that captivate your audience.
+                        </p>
+                    </div>
+                    <!-- Service Card 3 - Animated -->
+                    <div class="group bg-slate-900 p-8 rounded-xl shadow-md hover:shadow-2xl hover:bg-slate-800 transition-all duration-300 transform hover:-translate-y-2 fade-in-right">
+                        <div class="mb-4 text-teal-500 group-hover:text-teal-400 transition-colors duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 14h18m-7 4h7M3 6h18" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-slate-100 group-hover:text-white">Digital Strategy</h3>
+                        <p class="text-slate-400">
+                            Developing data-driven strategies to ensure your project's success and market impact.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Choose Us Section - Animated -->
+        <section id="why-us" class="py-20 px-4 md:py-24 bg-slate-900">
+            <div class="container mx-auto">
+                <div class="text-center mb-16 fade-in-up">
+                    <h2 class="text-4xl font-bold mb-4">Why Aura Solutions?</h2>
+                    <p class="text-slate-400 max-w-3xl mx-auto">
+                        We stand out by prioritizing quality, collaboration, and cutting-edge technology.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    <!-- Feature 1 - Animated -->
+                    <div class="bg-slate-950 p-8 rounded-xl shadow-lg border border-slate-800 scale-in" style="transition-delay: 0.1s;">
+                        <h3 class="text-xl font-semibold mb-3 text-teal-500">Expert Team</h3>
+                        <p class="text-slate-400">
+                            Our professionals are seasoned experts in their fields, bringing a wealth of knowledge to every project.
+                        </p>
+                    </div>
+                    <!-- Feature 2 - Animated -->
+                    <div class="bg-slate-950 p-8 rounded-xl shadow-lg border border-slate-800 scale-in" style="transition-delay: 0.2s;">
+                        <h3 class="text-xl font-semibold mb-3 text-teal-500">Transparent Process</h3>
+                        <p class="text-slate-400">
+                            We keep you in the loop every step of the way, ensuring full visibility and control over your project.
+                        </p>
+                    </div>
+                    <!-- Feature 3 - Animated -->
+                    <div class="bg-slate-950 p-8 rounded-xl shadow-lg border border-slate-800 scale-in" style="transition-delay: 0.3s;">
+                        <h3 class="text-xl font-semibold mb-3 text-teal-500">Future-Proof Solutions</h3>
+                        <p class="text-slate-400">
+                            We build scalable and maintainable products using the latest technologies and best practices.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 px-4 md:py-24 bg-slate-950">
+            <div class="container mx-auto max-w-xl">
+                <div class="text-center mb-12 fade-in-up">
+                    <h2 class="text-4xl font-bold mb-4">Let's Build Something Great</h2>
+                    <p class="text-slate-400">
+                        Ready to start your next project? Fill out the form below and we'll be in touch.
+                    </p>
+                </div>
+                <form id="contact-form" class="space-y-6 bg-slate-900 p-8 rounded-xl shadow-xl border border-slate-800 fade-in-up">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-slate-300">Name</label>
+                        <input type="text" id="name" name="name" required class="mt-1 block w-full px-4 py-3 bg-slate-800 border-slate-700 text-slate-100 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-slate-300">Email</label>
+                        <input type="email" id="email" name="email" required class="mt-1 block w-full px-4 py-3 bg-slate-800 border-slate-700 text-slate-100 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-slate-300">Message</label>
+                        <textarea id="message" name="message" rows="4" required class="mt-1 block w-full px-4 py-3 bg-slate-800 border-slate-700 text-slate-100 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500"></textarea>
+                    </div>
+                    <div>
+                        <button type="submit" class="w-full bg-teal-500 text-slate-950 font-bold py-3 px-6 rounded-md shadow-lg hover:bg-teal-400 transition-colors duration-300 transform hover:scale-105">
+                            Send Message
+                        </button>
+                    </div>
+                </form>
+                <div id="form-message" class="mt-4 text-center hidden"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-8 px-4">
+        <div class="container mx-auto text-center md:text-left flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 fade-in-up">
+            <p>&copy; 2024 Aura Solutions. All Rights Reserved.</p>
+            <div class="flex space-x-4 text-xl">
+                <a href="#" class="hover:text-teal-400 transition-colors duration-300">
+                    <!-- Social media icon placeholder -->
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c-5.419 0-9.837 4.418-9.837 9.837s4.418 9.837 9.837 9.837 9.837-4.418 9.837-9.837S17.419 2.163 12 2.163zm-3.21 8.892c-.088-.415-.175-.824-.263-1.239l.235-.411.39-.68a.747.747 0 011.233-.033l1.17 1.17c.175.175.385.289.605.289a.86.86 0 00.737-.369c.125-.19.125-.458 0-.649a.955.955 0 00-.737-.369c-.218 0-.429.114-.604.289L11.082 9.07a.955.955 0 00-.737-.369c-.218 0-.429.114-.604.289l-1.17 1.17a.86.86 0 00-.737-.369c-.218 0-.429.114-.604.289l-1.17 1.17a.747.747 0 01-.033-1.233l-.68.39a.26.26 0 00-.411.235c-.415-.088-.824-.175-1.239-.263a1.59 1.59 0 01-1.218-1.554.747.747 0 01-.033-1.233zM15.21 15.892c.088.415.175.824.263 1.239l-.235.411-.39.68a.747.747 0 01-1.233.033l-1.17-1.17a.955.955 0 00-.737.369c-.125.19-.125.458 0 .649a.955.955 0 00.737.369c.218 0 .429-.114.604-.289l1.17-1.17a.955.955 0 00.737.369c.218 0 .429-.114.604-.289l1.17-1.17a.747.747 0 01.033-1.233l.68-.39a.26.26 0 00.411-.235c.415.088.824.175 1.239.263a1.59 1.59 0 011.554 1.218z"/></svg>
+                </a>
+                <a href="#" class="hover:text-teal-400 transition-colors duration-300">
+                    <!-- Social media icon placeholder -->
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c-5.419 0-9.837 4.418-9.837 9.837s4.418 9.837 9.837 9.837 9.837-4.418 9.837-9.837S17.419 2.163 12 2.163zm-3.21 8.892c-.088-.415-.175-.824-.263-1.239l.235-.411.39-.68a.747.747 0 011.233-.033l1.17 1.17c.175.175.385.289.605.289a.86.86 0 00.737-.369c.125-.19.125-.458 0-.649a.955.955 0 00-.737-.369c-.218 0-.429.114-.604.289L11.082 9.07a.955.955 0 00-.737-.369c-.218 0-.429.114-.604.289l-1.17 1.17a.86.86 0 00-.737-.369c-.218 0-.429.114-.604.289l-1.17 1.17a.747.747 0 01-.033-1.233l-.68.39a.26.26 0 00-.411.235c-.415-.088-.824-.175-1.239-.263a1.59 1.59 0 01-1.218-1.554.747.747 0 01-.033-1.233zM15.21 15.892c.088.415.175.824.263 1.239l-.235.411-.39.68a.747.747 0 01-1.233.033l-1.17-1.17a.955.955 0 00-.737.369c-.125.19-.125.458 0 .649a.955.955 0 00.737.369c.218 0 .429-.114.604-.289l1.17-1.17a.955.955 0 00.737.369c.218 0 .429-.114.604-.289l1.17-1.17a.747.747 0 01.033-1.233l.68-.39a.26.26 0 00.411-.235c.415.088.824.175 1.239.263a1.59 1.59 0 011.554 1.218z"/></svg>
+                </a>
+                <a href="#" class="hover:text-teal-400 transition-colors duration-300">
+                    <!-- Social media icon placeholder -->
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c-5.419 0-9.837 4.418-9.837 9.837s4.418 9.837 9.837 9.837 9.837-4.418 9.837-9.837S17.419 2.163 12 2.163zm-3.21 8.892c-.088-.415-.175-.824-.263-1.239l.235-.411.39-.68a.747.747 0 011.233-.033l1.17 1.17c.175.175.385.289.605.289a.86.86 0 00.737-.369c.125-.19.125-.458 0-.649a.955.955 0 00-.737-.369c-.218 0-.429.114-.604.289L11.082 9.07a.955.955 0 00-.737-.369c-.218 0-.429.114-.604.289l-1.17 1.17a.86.86 0 00-.737-.369c-.218 0-.429.114-.604.289l-1.17 1.17a.747.747 0 01-.033-1.233l-.68.39a.26.26 0 00-.411.235c-.415-.088-.824-.175-1.239-.263a1.59 1.59 0 01-1.218-1.554.747.747 0 01-.033-1.233zM15.21 15.892c.088.415.175.824.263 1.239l-.235.411-.39.68a.747.747 0 01-1.233.033l-1.17-1.17a.955.955 0 00-.737.369c-.125.19-.125.458 0 .649a.955.955 0 00.737.369c.218 0 .429-.114.604-.289l1.17-1.17a.955.955 0 00.737.369c.218 0 .429-.114.604-.289l1.17-1.17a.747.747 0 01.033-1.233l.68-.39a.26.26 0 00.411-.235c.415.088.824.175 1.239.263a1.59 1.59 0 011.554 1.218z"/></svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Toggle mobile menu visibility
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Simple form submission handler
+        const contactForm = document.getElementById('contact-form');
+        const formMessage = document.getElementById('form-message');
+
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent default form submission
+
+            try {
+                // Get form data
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const message = document.getElementById('message').value;
+
+                // Simple validation
+                if (name === '' || email === '' || message === '') {
+                    formMessage.textContent = 'Please fill out all fields.';
+                    formMessage.className = 'mt-4 text-center text-red-400 block';
+                    return;
+                }
+
+                // Simulate form submission
+                console.log('Form Submitted!', { name, email, message });
+
+                // Display success message
+                formMessage.textContent = 'Thank you for your message! We will get back to you soon.';
+                formMessage.className = 'mt-4 text-center text-green-400 block';
+                contactForm.reset(); // Reset the form
+            } catch (error) {
+                // Display error message
+                console.error('An error occurred during form submission:', error);
+                formMessage.textContent = 'An error occurred. Please try again later.';
+                formMessage.className = 'mt-4 text-center text-red-400 block';
+            }
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.2 // Trigger when 20% of the element is visible
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                // If the element is visible, add the animate-visible class and stop observing
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Select all elements with animation classes
+        const animatedElements = document.querySelectorAll('.fade-in-up, .fade-in-left, .fade-in-right, .scale-in');
+        // Observe each element
+        animatedElements.forEach(element => {
+            observer.observe(element);
+        });
+
+        // For the hero section, the animation starts immediately on page load
+        document.querySelectorAll('.hero-text, .hero-cta').forEach(element => {
+            element.classList.add('animate-visible');
+        });
+    </script>
+
+</body>
+</html>
